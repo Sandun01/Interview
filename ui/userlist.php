@@ -2,6 +2,7 @@
 
 session_start();
 
+//get user id from session
 $userID = $_SESSION['user_ID'];
 
 ?>
@@ -38,9 +39,10 @@ $userID = $_SESSION['user_ID'];
 
             include_once '../bizlogic/config.php';
 
+            
             $sql = "Select * from user where id = '$userID' ";
 
-            $sql = "Select * from user";
+            //get user details
             $result = mysqli_query($connection, $sql);
 
             if(mysqli_num_rows($result) > 0){

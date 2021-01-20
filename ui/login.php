@@ -32,6 +32,7 @@
 				  LIMIT 1";
 		$result_set = mysqli_query($connection,$query);
 
+        //check the passwords
 		if ($result_set){
 
 			if(mysqli_num_rows($result_set) == 1){
