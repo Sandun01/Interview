@@ -10,13 +10,12 @@
 
 		if (!isset($_POST['username']) || strlen(trim($_POST['username'])) <= 1){
 			$errors[] = "username is missing or invalid";
-
-}
+		}
 
 		if (!isset($_POST['password']) || strlen(trim($_POST['password'])) <= 1){
 			$errors[] = "password is missing or invalid";
+		}
 
-}
 		//check if there are any errors in the form
 		if(empty($errors)){
 
@@ -25,30 +24,32 @@
 			$password = mysqli_real_escape_string($connection,$_POST['password']);
 			$hashed_password = sha1($password);
 
-		//prepare database query
-		$query = "SELECT *FROM user
-				  WHERE username = '{$username}'
-				  AND password = '{$password_hash}'
-				  LIMIT 1";
-		$result_set = mysqli_query($connection,$query);
+            //prepare database query
+            $query = "SELECT * FROM user
+                      WHERE username = '{$username}'
+                      AND password = '{$hashed_password}'
+                      LIMIT 1";
 
-        //check the passwords
-		if ($result_set){
+            $result_set = mysqli_query($connection,$query);
 
-			if(mysqli_num_rows($result_set) == 1){
+            //check the passwords
+            if ($result_set){
 
-				$user = mysqli_fetch_assoc($result_set);
-				$_SESSION['user_ID'] = $user['id'];
+                if(mysqli_num_rows($result_set) == 1){
 
-				header('Location: ../ui/userlist.php');
-			}else{
+                    $user = mysqli_fetch_assoc($result_set);
+                    $_SESSION['user_ID'] = $user['id'];
 
-				$errors[] = 'Invalid username or password';
-			}
-		}else{
-			$errors[] = 'database query failed';
-		}
-			}
+                    header('Location: ../ui/userlist.php');
+                }
+                else{
+                    $errors[] = "Invalid username or password";
+                }
+            }
+            else{
+                $errors[] = "database query failed";
+            }
+	    }
 	}
 ?>
 
@@ -64,21 +65,23 @@
         
         <h1 style="color: blue; text-align: center;">User Login</h1>
 
+        <?php
+
+// 	        if (isset($errors) && !empty($errors)){
+            if (!empty($errors)){
+
+                echo '<h3>Invalid Username / Password</h3>';
+            }
+        ?>
+
         <form method="POST" action="login.php">
 
-            <label>Userame</label><input type="text" name="username" required>
-            <label>Password</label><input type="password" name="password" required>
+            <label>Userame</label><input type="text" name="username" >
+            <label>Password</label><input type="password" name="password" >
 
-            <input type="submit" value="login" required>
+            <input type="submit" value="login" name="submit" required>
             
         </form>
-
-
-        <?php
-	        if (isset($errors) && !empty($errors)){
-		    echo '<h3>Invalid Username / Password</h3>';
-	        }
-	    ?>
 
     </body>
 
