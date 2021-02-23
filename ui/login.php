@@ -67,10 +67,12 @@
 
         <?php
 
-// 	        if (isset($errors) && !empty($errors)){
-            if (!empty($errors)){
+	        if (isset($errors) && !empty($errors)){
 
-                echo '<h3>Invalid Username / Password</h3>';
+	            foreach ($errors as $error){
+                   echo '<h3 style="color:red;">'.$error.'</h3>';
+                }
+
             }
         ?>
 
